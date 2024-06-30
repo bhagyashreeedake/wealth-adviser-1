@@ -56,6 +56,7 @@ export class LoansComponent implements OnInit {
       const uid = data.uid;
       const observables: Observable<ProfileLoan | null>[] = [];
       for (let i = 1; i <6; i++) {
+        // 
         // return this.loanservice.getLoanByUidAndId(data.uid, i.toString());
         observables.push(this.loanservice.getLoanByUidAndId(uid, i.toString()));
       }
