@@ -1,0 +1,29 @@
+<div fxLayout="row" fxLayoutAlign="start center" class="investment-container">
+    <div fxFlex="100%" fxFlex.gt-sm="50%" class="investment-details">
+    </div>
+
+    <div class="insurance">
+        <h3>{{ heading }}</h3>
+        <div id="smallCardContainer" class="small-card-container">
+            <!-- Displaying small cards dynamically -->
+            <!-- <div *ngFor="let smallCard of smallCards; let i = index" class="small-card"
+                (click)="openInsuraanceDialog(i)"> -->
+            <div *ngFor="let smallCard of smallCards" class="small-card" (click)="openInsuraanceDialog(smallCard.id)">
+
+                <!-- cardClickHandler(smallCard.textRows[2])"> -->
+                <div class="text-row">{{ smallCard.textRows[0] }}</div>
+                <div class="text-row">{{ smallCard.textRows[1] }}</div>
+                <div class="text-row">{{ smallCard.textRows[2] }}</div>
+                <div class="text-row">{{ smallCard.textRows[3] }}</div>
+                <div class="text-row">{{ smallCard.textRows[4] }}</div>
+                <div class="text-row">{{ smallCard.textRows[5] }}</div>
+                <div class="text-row">{{ smallCard.textRows[6] }}</div>
+                <div class="text-row">{{ smallCard.textRows[7] }}</div>
+                <div class="text-row">{{ smallCard.textRows[8] }}</div>
+                <div class="text-row">{{ smallCard.textRows[9] }}</div>
+                <button>Click me to know BEST ADVISE</button>
+
+            </div>
+        </div>
+        <div class="add-button" (click)="addSmallCard()">+</div>
+    </div>

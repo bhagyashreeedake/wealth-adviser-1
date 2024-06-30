@@ -1,0 +1,12 @@
+
+<app-side-nav></app-side-nav>
+<ng-container *ngIf="user$ | async as user">
+    <h1>Welcome to the home page, {{user.displayName}}!</h1>
+</ng-container>
+<app-charts></app-charts>
+<app-investment></app-investment>
+<!-- <app-transaction></app-transaction> -->
+<app-insurance></app-insurance>
+<app-loans></app-loans>
+<app-income-expense></app-income-expense>
+<app-transaction></app-transaction>

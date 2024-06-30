@@ -1,0 +1,155 @@
+#sample{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-white);
+    padding: 2rem;
+    border-radius: 2rem;
+    margin-top: 2.60rem;
+    user-select: none;
+    
+  }
+
+  
+.analytics{
+    background: var(--color-white);
+    padding: 2rem;
+    border-radius: 2rem;
+    margin-top: 2.60rem;
+    
+  }
+  
+  
+  
+  .analytics h3{
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    color: var(--color-dark);
+  
+    user-select: none;
+  }
+  
+  .analytics{
+   box-shadow: var(--box-shadow);
+   transition: all 300ms;
+  }
+  
+  .analytics:hover{
+   box-shadow: none;
+  }
+
+  
+.scoreMeter {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    margin: 0 auto 45px;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(./scoremeter.svg);
+    transition: all .9s ease-in-out;
+    -webkit-transition: all .9s ease-in-out;
+    box-shadow: var(--box-shadow);
+  }
+  
+  .scoreMeter .meterArrow.score-216 {
+    --score: 216deg;
+    transform: rotate(216deg);
+    -webkit-transform: rotate(216deg);
+    
+  }
+  
+  .scoreMeter .meterArrow {
+    /* z-index: 9;
+    position: absolute;
+    top: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 140px;
+    min-height: 140px;
+    margin: 0px auto;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(https://static.paisabazaar.com/media/myaccount/v2/scoreMeter/meter/meter_with_arrow.svg);
+    transform-origin: center;
+    -webkit-transform-origin: center;
+    transition: all .9s ease-in-out;
+    -webkit-transition: all .9s ease-in-out;
+    animation: meterArrowRotate 1s alternate linear;
+    -webkit-animation: meterArrowRotate 1s alternate linear;
+    --score: 0; */
+  
+    z-index: 9;
+    position: absolute;
+    top: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 140px;
+    min-height: 140px;
+    margin: 0px auto;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(https://static.paisabazaar.com/media/myaccount/v2/scoreMeter/meter/meter_with_arrow.svg);
+    transform-origin: center;
+    -webkit-transform-origin: center;
+    transition: transform 3s ease-in-out;
+    -webkit-transition: transform 3s ease-in-out;
+  }
+  
+  .scoreMeter .meterArrow::before {
+    content: "";
+    z-index: 99;
+    position: absolute;
+    bottom: 32px;
+    left: -11px;
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    border-radius: 50%;
+  
+  }
+  
+  .scoreMeter .meterArrow::after {
+    content: "";
+    transition: all .9s ease-in-out;
+    -webkit-transition: all .9s ease-in-out;
+    position: absolute;
+    bottom: 28px;
+    left: -15px;
+    width: 18px;
+    height: 18px;
+    background: #ff203f;
+    box-shadow: 0 2px 6px 0 #ff203f;
+    border-radius: 50%
+  
+      
+  }
+  
+  #sample{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-white);
+    padding: 2rem;
+    border-radius: 2rem;
+    margin-top: 2.60rem;
+    user-select: none;
+    
+  }
+  
+  
+  .scoreMeter .meterScore {
+    margin-top: 38px;
+    z-index: 9;
+    width: 100px;
+    cursor: pointer;
+    font-weight: bold;
+  }

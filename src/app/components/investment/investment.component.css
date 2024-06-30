@@ -1,0 +1,74 @@
+.investment {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 15px;
+    text-align: center;
+    transition: background-color 0.3s;
+  }
+  
+  .investment:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .add-button {
+    margin-top: 10px;
+    cursor: pointer;
+    color: #3498db;
+    font-size: 20px;
+  }
+  
+  .small-card {
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    transition: background-color 0.3s;
+    display: inline-block;
+    width: calc(25% - 20px); /* Adjust the width to fit 4 cards in a row */
+  }
+  
+  .small-card:not(:last-child) {
+    margin-right: 5px;
+  }
+  
+  .small-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ccc;
+  }
+  
+  .small-card:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .text-row {
+    font-size: 12px;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .small-card {
+      width: calc(33.33% - 20px); /* Adjust the width to fit 3 cards in a row for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .small-card {
+      width: 100%; /* Full width for screens smaller than 480px */
+      margin-right: 0; /* Remove right margin to ensure full width */
+    }
+  }
+  

@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Add Transaction</h2>
+<div mat-dialog-content>
+  
+  <mat-form-field>
+    <mat-label>Select Type</mat-label>
+    <mat-select [(ngModel)]="transactionType">
+      <mat-option value="Income">Income</mat-option>
+      <mat-option value="Expense">Expense</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div *ngIf="transactionType === 'Income'">
+    <mat-form-field>
+      <mat-label>Select Income Type</mat-label>
+      <mat-select [(ngModel)]="incomeType">
+        <mat-option *ngFor="let type of data.incomeTypes" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="transactionType === 'Expense'">
+    <mat-form-field>
+      <mat-label>Select Expense Type</mat-label>
+      <mat-select [(ngModel)]="expenseType">
+        <mat-option *ngFor="let type of data.expenseTypes" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <mat-form-field>
+    <input matInput placeholder="Date" [(ngModel)]="date" type="date">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Description" [(ngModel)]="description">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Amount" [(ngModel)]="amount" type="number">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="updateincomeexpence()" [mat-dialog-close]="{type: transactionType, incomeType: incomeType, expenseType: expenseType, description: description, amount: amount}" cdkFocusInitial>Save</button>
+</div>
