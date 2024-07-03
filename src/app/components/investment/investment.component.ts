@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InvesstmentDialogComponent } from '../invesstment-dialog/invesstment-dialog.component';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
-import { forkJoin, of, switchMap } from 'rxjs';
+import { Observable, forkJoin, map, of, switchMap } from 'rxjs';
 import { InvestmentService } from 'src/app/services/investment.service';
 import { ProfileInvestment } from 'src/app/models/investment';
 import { uid } from 'chart.js/dist/helpers/helpers.core';
@@ -38,41 +38,93 @@ export class InvestmentComponent {
   // savingsInvestment!: number;
 
   constructor(private dialog: MatDialog, private dataservice:DataServiceService, private investmentservice: InvestmentService, private usersService: UsersService) { }
+
   ngOnInit(): void {
-    debugger
-    
+    debugger;
+  
     this.user$.pipe(
       switchMap((data: any) => {
         if (!data || !data.uid) {
-          // If user data or UID is not available, return an observable that emits null
-          return of(null);
-        } 
-        return this.investmentservice.getInvestmentByUid(data.uid, '1');
-      
+          // If user data or UID is not available, return an observable that emits an empty array
+          return of([]);
+        }
+  
+        // Define a recursive function to fetch insurance data
+        const fetchInvestmentData = (uid: string, index: number): Observable<any[]> => {
+          return this.investmentservice.getInvestmentByUid(uid, index.toString()).pipe(
+            switchMap((investmentData: any) => {
+              if (investmentData) {
+                // If data is found, fetch the next data recursively
+                return fetchInvestmentData(uid, index + 1).pipe(
+                  map((nextData: any[]) => [investmentData, ...nextData])
+                );
+              } else {
+                // If no data is found, return an empty array
+                return of([]);
+              }
+            })
+          );
+        };
+  
+        // Start the recursive fetching with the initial index
+        return fetchInvestmentData(data.uid, 1);
       })
-    ).subscribe((investmentData:any) => {
-      if (investmentData) {
-        // Handle the insurance data here
-        debugger
-        this.investmentInfo.push(investmentData)
-        console.log('Investment Data:', investmentData);
-        console.log("investment inside array ", this.investmentInfo)
-        console.log("id",this.investmentInfo[0].id)
-
-        if(this.investmentInfo){
-          for(let i=0;i<this.investmentInfo.length;i++){
-
-            this.updateInvestments(this.investmentInfo[i],this.investmentInfo[i].id)
+    ).subscribe((allInvestmentData: any[]) => {
+      if (allInvestmentData.length > 0) {
+        // Handle the array of insurance data here
+        debugger;
+        this.investmentInfo.push(...allInvestmentData);
+        console.log('Investment Data:', allInvestmentData);
+        console.log("investment inside array ", this.investmentInfo);
+        console.log("id", this.investmentInfo[0].id);
+  
+        if (this.investmentInfo) {
+          for (let i = 0; i < this.investmentInfo.length; i++) {
+            this.updateInvestments(this.investmentInfo[i], this.investmentInfo[i].id);
           }
         }
       } else {
-        // Handle case when insurance data is null
-        console.log('No investment data found.');
+        // Handle case when no insurance data is found
+        console.log('No insurance data found.');
       }
     });
- 
- 
   }
+
+  // ngOnInit(): void {
+  //   debugger
+    
+  //   this.user$.pipe(
+  //     switchMap((data: any) => {
+  //       if (!data || !data.uid) {
+  //         // If user data or UID is not available, return an observable that emits null
+  //         return of(null);
+  //       } 
+  //       return this.investmentservice.getInvestmentByUid(data.uid, '1');
+      
+  //     })
+  //   ).subscribe((investmentData:any) => {
+  //     if (investmentData) {
+  //       // Handle the insurance data here
+  //       debugger
+  //       this.investmentInfo.push(investmentData)
+  //       console.log('Investment Data:', investmentData);
+  //       console.log("investment inside array ", this.investmentInfo)
+  //       console.log("id",this.investmentInfo[0].id)
+
+  //       if(this.investmentInfo){
+  //         for(let i=0;i<this.investmentInfo.length;i++){
+
+  //           this.updateInvestments(this.investmentInfo[i],this.investmentInfo[i].id)
+  //         }
+  //       }
+  //     } else {
+  //       // Handle case when insurance data is null
+  //       console.log('No investment data found.');
+  //     }
+  //   });
+ 
+ 
+  // }
 
   openInvestmentDialog(id: number): void {
     const dialogRef = this.dialog.open(InvesstmentDialogComponent, {

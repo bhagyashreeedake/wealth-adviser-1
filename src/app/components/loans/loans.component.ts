@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoanDialogComponent } from '../loan-dialog/loan-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
-import { Observable, catchError, concat, concatMap, forkJoin, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, concat, concatMap, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { LoanService } from 'src/app/services/loan.service';
 import { ProfileLoan } from 'src/app/models/loan';
 import { UsersService } from 'src/app/services/users.service';
@@ -32,60 +32,109 @@ export class LoansComponent implements OnInit {
   }));
   currentUserSubscription: any;
   constructor(private dialog: MatDialog, private dataservice: DataServiceService, private usersService: UsersService, private loanservice: LoanService) { }
-
   ngOnInit(): void {
-    // this.currentUserSubscription = this.usersService.currentUser$?.subscribe((user: { uid: any }) => {
-    //   if (user && user.uid) {
-    //     // Fetch loan data for each small card
-    //     for (let i = 1; i <= 6; i++) {
-    //       this.fetchLoanData(user.uid, i);
-    //     }
-    //   }
-    // });
+    debugger;
   
-    
-    // this.fetchLoanData();
-  //   this.fetchLoanDataForId(1);
-  this.user$.pipe(
-    tap(user => console.log('User data:', user)), 
-    concatMap((data: any) => {
-      if (!data || !data.uid) {
-        return of([]);
-      }
-      
-      const uid = data.uid;
-      const observables: Observable<ProfileLoan | null>[] = [];
-      for (let i = 1; i <6; i++) {
-        // 
-        // return this.loanservice.getLoanByUidAndId(data.uid, i.toString());
-        observables.push(this.loanservice.getLoanByUidAndId(uid, i.toString()));
-      }
-      // return forkJoin(observables);
-       return concat(...observables);
-    }),
-    catchError(error => {
-      console.error('Error fetching loan data:', error);
-      return of([]); // Return observable that emits an empty array to continue the chain
-    })
-  ).subscribe((loanData: any) => {
-    console.log('Fetched loan data:', loanData);
-    // fetchedLoanData.push(loanData);
-    // if (loanData && loanData.length > 0) {
-    // this.loanInfo.push(loanData)
-    // console.log('loan Data:', loanData);
-    // console.log("loan inside array ", this.loanInfo)
-    // // console.log("id",this.loanInfo[0].id)
-    // loanData.forEach((loan:any, index: number) => {
-      // let loan: any; 
-      if (loanData) {
-        // const id = index + 1; // Assuming id starts from 1
-        // this.updateSmallCard(id, loan);
-        // this.updateSmallCard(index + 1, loan); // Update small card data for each loan
-        const id = parseInt(loanData.id); // Assuming id is a string, convert it to a number
-        this.updateSmallCard(id, loanData);
+    this.user$.pipe(
+      switchMap((data: any) => {
+        if (!data || !data.uid) {
+          // If user data or UID is not available, return an observable that emits an empty array
+          return of([]);
+        }
+  
+        // Define a recursive function to fetch insurance data
+        const fetchLoanData = (uid: string, index: number): Observable<any[]> => {
+          return this.loanservice.getLoanByUid(uid, index.toString()).pipe(
+            switchMap((loanData: any) => {
+              if (loanData) {
+                // If data is found, fetch the next data recursively
+                return fetchLoanData(uid, index + 1).pipe(
+                  map((nextData: any[]) => [loanData, ...nextData])
+                );
+              } else {
+                // If no data is found, return an empty array
+                return of([]);
+              }
+            })
+          );
+        };
+  
+        // Start the recursive fetching with the initial index
+        return fetchLoanData(data.uid, 1);
+      })
+    ).subscribe((allLoanData: any[]) => {
+      if (allLoanData.length > 0) {
+        // Handle the array of insurance data here
+        debugger;
+        this.loanInfo.push(...allLoanData);
+        console.log('Loan Data:', allLoanData);
+        console.log("loan inside array ", this.loanInfo);
+        console.log("id", this.loanInfo[0].id);
+  
+        if (this.loanInfo) {
+          for (let i = 0; i < this.loanInfo.length; i++) {
+            this.updateLoan(this.loanInfo[i], this.loanInfo[i].id);
+          }
+        }
+      } else {
+        // Handle case when no insurance data is found
+        console.log('No loan data found.');
       }
     });
   }
+  // ngOnInit(): void {
+  //   // this.currentUserSubscription = this.usersService.currentUser$?.subscribe((user: { uid: any }) => {
+  //   //   if (user && user.uid) {
+  //   //     // Fetch loan data for each small card
+  //   //     for (let i = 1; i <= 6; i++) {
+  //   //       this.fetchLoanData(user.uid, i);
+  //   //     }
+  //   //   }
+  //   // });
+  
+    
+  //   // this.fetchLoanData();
+  // //   this.fetchLoanDataForId(1);
+  // this.user$.pipe(
+  //   tap(user => console.log('User data:', user)), 
+  //   concatMap((data: any) => {
+  //     if (!data || !data.uid) {
+  //       return of([]);
+  //     }
+      
+  //     const uid = data.uid;
+  //     const observables: Observable<ProfileLoan | null>[] = [];
+  //     for (let i = 1; i <6; i++) {
+        
+  //       // return this.loanservice.getLoanByUidAndId(data.uid, i.toString());
+  //       observables.push(this.loanservice.getLoanByUidAndId(uid, i.toString()));
+  //     }
+  //     // return forkJoin(observables);
+  //      return concat(...observables);
+  //   }),
+  //   catchError(error => {
+  //     console.error('Error fetching loan data:', error);
+  //     return of([]); // Return observable that emits an empty array to continue the chain
+  //   })
+  // ).subscribe((loanData: any) => {
+  //   console.log('Fetched loan data:', loanData);
+  //   // fetchedLoanData.push(loanData);
+  //   // if (loanData && loanData.length > 0) {
+  //   // this.loanInfo.push(loanData)
+  //   // console.log('loan Data:', loanData);
+  //   // console.log("loan inside array ", this.loanInfo)
+  //   // // console.log("id",this.loanInfo[0].id)
+  //   // loanData.forEach((loan:any, index: number) => {
+  //     // let loan: any; 
+  //     if (loanData) {
+  //       // const id = index + 1; // Assuming id starts from 1
+  //       // this.updateSmallCard(id, loan);
+  //       // this.updateSmallCard(index + 1, loan); // Update small card data for each loan
+  //       const id = parseInt(loanData.id); // Assuming id is a string, convert it to a number
+  //       this.updateSmallCard(id, loanData);
+  //     }
+  //   });
+  // }
   // fetchLoanData() {
   //   this.loanservice.getLoanByUid('your-uid-here').subscribe(
   //     (data: ProfileLoan[]) => {

@@ -13,7 +13,6 @@ import { InvestmentService } from 'src/app/services/investment.service';
 import { InsuranceService } from 'src/app/services/insurance.service';
 import { LoanService } from 'src/app/services/loan.service';
 import { FinancescoreService } from 'src/app/services/financescore.service';
-import { ChartService } from 'src/app/services/chart.service';
 
 
 @Component({
@@ -21,10 +20,10 @@ import { ChartService } from 'src/app/services/chart.service';
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.css']
 })
-
 export class ChartsComponent implements OnInit {
   totalInitialInvestment!: number;
   totalLoanAmount!: number;
+  totalbalance: number = 0;
   totalIncome!:number
   totalExpence!:number 
   // totalBalance!:number 
@@ -51,133 +50,96 @@ export class ChartsComponent implements OnInit {
   yearlyExpense: number = 0;
   totalBalance: number = 0;
 
-  // private subscription: Subscription = new Subscription();
 
-  // /export class ChartsComponent implements OnInit, OnDestroy {
-    private subscription: Subscription = new Subscription();
-  combinedData: any;
-    uid: any;
   
 
-  constructor(private dataservice:DataServiceService, private usersService:UsersService, private incomeexpenceservice: IncomeExpenceService, private invesmentservice: InvestmentService, private insuranceservice:InsuranceService, private loanservice:LoanService, private financescore: FinancescoreService, private chartservice: ChartService) {this.chartservice.fetchAllData() }
+  constructor(private dataservice:DataServiceService, private usersService:UsersService, private incomeexpenceservice: IncomeExpenceService, private invesmentservice: InvestmentService, private insuranceservice:InsuranceService, private loanservice:LoanService, private financescore: FinancescoreService) { }
   calculateScore(inputs: any): void {
     const score = this.financescore.calculateFinancialFitnessScore(inputs);
     console.log(`Financial Fitness Score: ${score}`);
     // Now you can use this score to update your meter gauge component
   }
-
-  
   ngOnInit(): void {
-    // this.usersService.currentUser$.subscribe((user: { uid: any; }) => {
-    //   if (user) {
-    //     const uid = user.uid; // Extract the uid from the user object
-        
-    //     this.chartservice.fetchAllData(uid) // Call fetchAllData with the uid
-    //       .then(combinedData => {
-    //         this.combinedData = combinedData;
-    //         console.log('Combined data:', this.combinedData);
-    //         // Use the combinedData in your component logic
-    //         console.log('ngOnInit', this.chartservice.combinedData$);
-    //       })
-    //       .catch(error => {
-    //         console.error('Error fetching combined data:', error);
-    //       });
-    //   }
-    // });
-  
 
-    // this.chartservice.fetchAllData()
-    console.log('ngOnInit', this.chartservice.combinedData$);
-    this.totalBalance = this.chartservice.combinedData$.this.incomeexpenceinfo.totalBalance;
-    this.subscription = this.chartservice.combinedData$.subscribe((data: any) => {
-      console.log('Combined data:', data);
-      this.data = data;
-      // Now you can assign this data to a component property (optional)
-      // this.data = data;
-    });
-    // this.subscription.add(
-    //   this.chartservice.combinedData$.subscribe(
-    //     data => {
-    //       console.log('Combined data:', data);
-    //       this.data = data;
-    //       // You can also assign this data to a component property
-    //     },
-    //     error => {
-    //       console.error('Error fetching combined data:', error);
-    //     }
-    //   )
-    // );
-    // ngOnDestroy() {
-    //   this.subscription.unsubscribe();
-    // }
- 
-    // this.user$.pipe(
-    //   switchMap((data: any) => {
-    //     if (!data || !data.uid) {
-    //       // If user data or UID is not available, return an observable that emits null
-    //       return of(null);
-    //     } 
-    //     return this.incomeexpenceservice.getIncomeexpenceByUid(data.uid);
+    this.user$.pipe(
+      switchMap((data: any) => {
+        if (!data || !data.uid) {
+          // If user data or UID is not available, return an observable that emits null
+          return of(null);
+        } 
+        return this.incomeexpenceservice.getIncomeexpenceByUid(data.uid);
         
       
-    //   })
-    // ).subscribe((incomeexpenceData:any) => {
-    //   if (incomeexpenceData) {
-    //     // Handle the insurance data here
-    //     // this.setFetchedDataintoform(incomeexpenceData);
-    //     debugger
-    //     this.incomeexpenceInfo.push(incomeexpenceData)
+      })
+    ).subscribe((incomeexpenceData:any) => {
+      
+        // Handle the insurance data here
+        // this.setFetchedDataintoform(incomeexpenceData);
+        debugger
+        if (incomeexpenceData) {
+          this.incomeexpenceInfo.push(incomeexpenceData);
+          this.setFetchedDataIntoForm(incomeexpenceData);
+          this.updateChartData();
 
-    //     console.log('Incomeexpence Data:', incomeexpenceData);
-    //     console.log("incomeexpence inside array ", this.incomeexpenceInfo)
-    //     // console.log("id",this.incomeexpenceInfo[0].id)
+        console.log('Incomeexpence Data:', incomeexpenceData);
+        console.log("incomeexpence inside array ", this.incomeexpenceInfo)
+        // console.log("id",this.incomeexpenceInfo[0].id)
 
-    //     // if(this.incomeexpenceInfo){
-    //     //   for(let i=0;i<this.incomeexpenceInfo.length;i++){
+        // if(this.incomeexpenceInfo){
+        //   for(let i=0;i<this.incomeexpenceInfo.length;i++){
 
-    //     //     this.updateincomeexpence(this.incomeexpenceInfo[i],this.incomeexpenceInfo[i].id)
-    //     //   }
-    //     // }
-    //   } else {
-    //     // Handle case when insurance data is null
-    //     console.log('No incomeexpence data found.');
-    //   }
-    // });
+        //     this.updateincomeexpence(this.incomeexpenceInfo[i],this.incomeexpenceInfo[i].id)
+        //   }
+        // }
+      } else {
+        // Handle case when insurance data is null
+        console.log('No incomeexpence data found.');
+      }
+    
+    });
+    this.dataservice.totalBalance$.subscribe(totalBalance => {
+      this.totalBalance = totalBalance;
+      this.updateChartData();
+    });
+
     // this.setFetchedDataintoform(this.totalBalance)
-   
+    //  console.log('total balance', this.totalbalance)
     // // const totalBalance = this.incomeExpenceData[6];
     // // console.log('totalbalannce value is', totalBalance)
-    // this.dataservice.totalInitialInvestment$.subscribe(total => {
-    //   this.totalInitialInvestment = total;
+    this.dataservice.totalInitialInvestment$.subscribe(total => {
+      this.totalInitialInvestment = total;
+    })
+
+    this.dataservice.totalLoanAmount$.subscribe(total => {
+      this.totalLoanAmount = total;
+    })
+
+    
+    this.totalIncomeSubscription = this.dataservice.getlatestTotalIncome().subscribe(income=>{
+      this.totalIncome = income;
+      console.log('income', this.totalIncome)
+      this.updateChartData();
+
+    })
+    // this.totalInitialamountSubscription = this.dataservice.getlatestTotalInitialamount().subscribe(totalInitialamount=>{
+    //   this.totalInitialamount = totalInitialamount
+    //   // /console.log('income', this.totalIncome)
+    //   // this.updateChartData();
+
     // })
 
-    // this.dataservice.totalLoanAmount$.subscribe(total => {
-    //   this.totalLoanAmount = total;
+    this.totalexpencesubscription = this.dataservice.getlatestTotalExpence().subscribe(expence=>{
+      this.totalExpence = expence;
+      console.log('expence', this.totalExpence)
+      this.updateChartData();
+      
+    })
+    
+
+    // this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
+    //   this.totalBalance= totalbalance
     // })
-
-    // this.totalIncomeSubscription = this.dataservice.getlatestTotalIncome().subscribe(income=>{
-    //   this.totalIncome = income;
-    //   console.log('income', this.totalIncome)
-    //   this.updateChartData();
-
-    // })
-    // // this.totalInitialamountSubscription = this.dataservice.getlatestTotalInitialamount().subscribe(totalInitialamount=>{
-    // //   this.totalInitialamount = totalInitialamount
-    // //   // /console.log('income', this.totalIncome)
-    // //   // this.updateChartData();
-
-    // // })
-
-    // this.totalexpencesubscription = this.dataservice.getlatestTotalExpence().subscribe(expence=>{
-    //   this.totalExpence = expence;
-    //   console.log('expence', this.totalExpence)
-    //   this.updateChartData();
-    // })
-
-    // // this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
-    // //   this.totalBalance= totalbalance
-    // // })
-    // let expence = this.dataservice.getlatestTotalExpence()
+    let expence = this.dataservice.getlatestTotalExpence()
     // Initialize your DOM-related operations in ngOnInit
     document.addEventListener('DOMContentLoaded', () => {
       const meterArrow = document.querySelector('.scoreMeter .meterArrow') as HTMLElement | null;
@@ -211,7 +173,6 @@ export class ChartsComponent implements OnInit {
     this.initChart();
 
     this.calculateScore("")
-    console.log('calculated score', this.calculateScore);
 
   }
 
@@ -240,7 +201,7 @@ export class ChartsComponent implements OnInit {
 
     setFetchedDataIntoForm(incomeExpenseData: any) {
       this.totalBalance = incomeExpenseData.totalBalance;
-      console.log('totalbalannce value is', this.totalBalance)
+      console.log('totalbalance value is', this.totalBalance)
   }
   
 
@@ -268,6 +229,7 @@ export class ChartsComponent implements OnInit {
     if (this.myDonutChart) {
       this.myDonutChart.data.datasets[0].data = [this.totalExpence, this.totalIncome];
       this.myDonutChart.update();
+      console.log('total expence', this.totalExpence)
     }
   }
   
