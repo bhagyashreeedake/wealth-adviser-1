@@ -45,7 +45,8 @@ import { TransactionPopupComponent } from './components/transaction-popup/transa
 import { MatSelectModule } from '@angular/material/select';
 import { InsuraanceDialogComponent } from './components/insuraance-dialog/insuraance-dialog.component';
 import { LoanDialogComponent } from './components/loan-dialog/loan-dialog.component';
-
+// import { FinancialScoreComponent } from './components/FinancialScoreComponent';
+// import { FinancescoreService } from './services/financescore.service';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,7 @@ import { LoanDialogComponent } from './components/loan-dialog/loan-dialog.compon
     MatRadioModule,
     MatNativeDateModule,
     MatSelectModule
-
+    
     
   ],
   providers: [],
