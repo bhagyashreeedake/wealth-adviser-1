@@ -22,6 +22,8 @@ export class DataServiceService {
   expense$ = this.expenseSubject.asObservable();
   totalBalance$ = this.totalBalanceSubject.asObservable();
   totalInitialamont$ = this.totalInitialamountsubject.asObservable();
+  totalIncome$ = this.incomeSubject.asObservable();
+  totalExpence$ = this.expenseSubject.asObservable();
   
 
   constructor() { }
@@ -77,6 +79,8 @@ export class DataServiceService {
     const totalBalance = this.incomeSubject.value - this.expenseSubject.value;
     this.totalBalanceSubject.next(totalBalance);
   }
+
+  
 
   
 }

@@ -161,14 +161,14 @@ export class IncomeExpenseComponent implements OnInit {
     const index = this.transactions.indexOf(transaction);
     if (index !== -1) {
       this.transactions.splice(index, 1);
-      // this.updateChart();
+      this.updateChart();
     }
   }
 
   
 
   // // Update chart data
-  // updateChart() {
-  //   this.doughnutChartData = [this.getTotalIncome(), this.getTotalExpense()];
-  // }
+   updateChart() {
+  //  this.doughnutChartData = [this.getTotalIncome(), this.getTotalExpense()];
+  }
 }

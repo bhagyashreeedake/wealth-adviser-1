@@ -24,8 +24,8 @@ export class ChartsComponent implements OnInit {
   totalInitialInvestment!: number;
   totalLoanAmount!: number;
   totalbalance: number = 0;
-  totalIncome!:number
-  totalExpence!:number 
+  totalincome:number = 0;
+  totalexpence:number = 0; 
   // totalBalance!:number 
   transactions: any[] = [];
   
@@ -49,6 +49,9 @@ export class ChartsComponent implements OnInit {
   quarterlyExpense: number = 0;
   yearlyExpense: number = 0;
   totalBalance: number = 0;
+  totalIncome:number = 0;
+  totalExpence:number = 0;
+  // updateMeter: any;
 
 
   
@@ -57,8 +60,29 @@ export class ChartsComponent implements OnInit {
   calculateScore(inputs: any): void {
     const score = this.financescore.calculateFinancialFitnessScore(inputs);
     console.log(`Financial Fitness Score: ${score}`);
-    // Now you can use this score to update your meter gauge component
+    
+    const meterArrow = document.querySelector('.scoreMeter .meterArrow') as HTMLElement | null;
+    const meterScore = document.querySelector('.scoreMeter .meterScore .score') as HTMLElement | null;
+
+      const updateMeter = (score: number) => {
+        if (meterArrow && meterScore) {
+          const rotation = (score / 10) * 225;
+          meterArrow.style.transform = `rotate(${rotation}deg)`;
+          meterArrow.dataset['score'] = score.toFixed(0);
+          meterScore.textContent = `${score.toFixed(0)}/10`;
+        }
+      };
+      
+  
+      setTimeout(() => {
+        if (meterArrow) {
+          meterArrow.style.transition = 'transform 3s ease-in-out';
+          updateMeter(score); // Call the updateMeter function
+        }
+      }, 500);
   }
+  
+  
   ngOnInit(): void {
 
     this.user$.pipe(
@@ -102,6 +126,16 @@ export class ChartsComponent implements OnInit {
       this.updateChartData();
     });
 
+    this.dataservice.totalIncome$.subscribe(totalIncome => {
+      this.totalIncome = totalIncome;
+      this.updateChartData();
+    });
+
+    this.dataservice.totalExpence$.subscribe(totalExpence => {
+      this.totalExpence = totalExpence;
+      this.updateChartData();
+    });
+
     // this.setFetchedDataintoform(this.totalBalance)
     //  console.log('total balance', this.totalbalance)
     // // const totalBalance = this.incomeExpenceData[6];
@@ -115,12 +149,13 @@ export class ChartsComponent implements OnInit {
     })
 
     
-    this.totalIncomeSubscription = this.dataservice.getlatestTotalIncome().subscribe(income=>{
-      this.totalIncome = income;
-      console.log('income', this.totalIncome)
-      this.updateChartData();
+    // this.totalIncomeSubscription = this.dataservice.getlatestTotalIncome().subscribe(income=>{
+    //   this.totalIncome = income;
+    //   console.log('income', this.totalIncome)
+    //   this.updateChartData();
 
-    })
+    // })
+    
     // this.totalInitialamountSubscription = this.dataservice.getlatestTotalInitialamount().subscribe(totalInitialamount=>{
     //   this.totalInitialamount = totalInitialamount
     //   // /console.log('income', this.totalIncome)
@@ -128,12 +163,12 @@ export class ChartsComponent implements OnInit {
 
     // })
 
-    this.totalexpencesubscription = this.dataservice.getlatestTotalExpence().subscribe(expence=>{
-      this.totalExpence = expence;
-      console.log('expence', this.totalExpence)
-      this.updateChartData();
+    // this.totalexpencesubscription = this.dataservice.getlatestTotalExpence().subscribe(expence=>{
+    //   this.totalExpence = expence;
+    //   console.log('expence', this.totalExpence)
+    //   this.updateChartData();
       
-    })
+    // })
     
 
     // this.totalBalanceSubscription = this.dataservice.getlatestTotalBalance().subscribe(totalbalance=>{
@@ -153,9 +188,12 @@ export class ChartsComponent implements OnInit {
           meterScore.textContent = `${score.toFixed(0)}/10`;
         }
       };
+      
+     
+      
 
       // Initial animation with a predefined score (e.g., 8)
-      const initialScore = 10;  // Set the initial score here
+      const score = 5;  // Set the initial score here
       // window.updateInitialScore = (score: number) => {
       //   updateMeter(score);
       // };
@@ -164,7 +202,7 @@ export class ChartsComponent implements OnInit {
       setTimeout(() => {
         if (meterArrow) {
           meterArrow.style.transition = 'transform 3s ease-in-out';
-          updateMeter(initialScore);
+          updateMeter(score);
         }
       }, 500); 
 
@@ -196,13 +234,21 @@ export class ChartsComponent implements OnInit {
       this.yearlyExpense=incomeexpenceData.yearlyExpense;
       this.activeIncome=incomeexpenceData.activeIncome;
       this.totalBalance = incomeexpenceData.totalBalance;
+      this.totalIncome = incomeexpenceData.totalIncome;
+      this.totalExpence = incomeexpenceData.totalExpense;
       
     }
 
     setFetchedDataIntoForm(incomeExpenseData: any) {
       this.totalBalance = incomeExpenseData.totalBalance;
+      this.totalIncome = incomeExpenseData.totalIncome;
+      this.totalExpence = incomeExpenseData.totalExpense;
       console.log('totalbalance value is', this.totalBalance)
+      console.log('totalIncome value is', this.totalIncome)
+      console.log('totalExpence value is', this.totalExpence)
+
   }
+  
   
 
   initChart(): void {
@@ -230,6 +276,8 @@ export class ChartsComponent implements OnInit {
       this.myDonutChart.data.datasets[0].data = [this.totalExpence, this.totalIncome];
       this.myDonutChart.update();
       console.log('total expence', this.totalExpence)
+      console.log('total income', this.totalIncome)
+
     }
   }
   
