@@ -28,6 +28,8 @@ export class IncomeExpenseComponent implements OnInit {
   totalBalance: number = 0;
   incomeTypes: string[] = ['Active Income', 'Passive Income', 'Other Income'];
   expenseTypes: string[] = ['Monthly Expense', 'Quarterly Expense', 'Yearly Expense'];
+  notifications: string[] = []; // Add this line
+
 
   constructor(private dialog: MatDialog, private dataservice: DataServiceService, private incomeexpenceservice: IncomeExpenceService, private usersService: UsersService) { }
 
@@ -45,6 +47,7 @@ export class IncomeExpenseComponent implements OnInit {
         this.setFetchedDataintoform(incomeexpenceData);
         this.incomeexpenceInfo.push(incomeexpenceData);
         console.log('Incomeexpence Data:', incomeexpenceData);
+        this.checkFinancialConditions(); // Call the method here
       } else {
         console.log('No incomeexpence data found.');
       }
@@ -59,6 +62,22 @@ export class IncomeExpenseComponent implements OnInit {
     this.yearlyExpense = incomeexpenceData.yearlyExpense;
     this.activeIncome = incomeexpenceData.activeIncome;
     this.totalBalance = incomeexpenceData.totalBalance;
+  }
+
+  checkFinancialConditions() {
+    this.notifications = []; // Clear existing notifications
+
+    if (this.activeIncome > this.passiveIncome) {
+      this.notifications.push('Your active income is greater than your passive income. Consider increasing your passive income.');
+    }
+
+    if (this.totalBalance < 0) {
+      this.notifications.push('Your total balance is negative. Consider reducing your expenses.');
+    }
+
+    if (this.getTotalIncome() < this.getTotalExpense()) {
+      this.notifications.push('Your total income is less than your total expense. Consider increasing your income sources.');
+    }
   }
 
   openTransactionPopup(): void {

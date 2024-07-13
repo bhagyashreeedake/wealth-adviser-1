@@ -1,4 +1,4 @@
-.container {
+/* .container {
     max-width: 600px;
     margin: 0 auto;
   }
@@ -49,5 +49,56 @@
   
   button:hover {
     background-color: #0056b3;
+  }
+   */
+
+
+
+
+   .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  h2, h3 {
+    text-align: center;
+  }
+  
+  .type {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    flex: 1;
+  }
+  
+  .value {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .total-income,
+  .total-expense,
+  .total-balance {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  .notifications {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .notification {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
   }
   

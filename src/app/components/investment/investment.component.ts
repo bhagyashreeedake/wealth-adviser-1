@@ -83,6 +83,7 @@ export class InvestmentComponent {
             this.updateInvestments(this.investmentInfo[i], this.investmentInfo[i].id);
           }
         }
+        this.verifyInvestmentAmounts();
       } else {
         // Handle case when no insurance data is found
         console.log('No insurance data found.');
@@ -225,6 +226,43 @@ export class InvestmentComponent {
     alert(`Clicked: ${cardText}`);
   }
 
+
+  verifyInvestmentAmounts() {
+    console.log('Verifying investment amounts...');
+    let emergencyFundAmount = 0;
+    let otherInvestmentAmounts: { type: string, amount: number }[] = [];
+
+    // Find the emergency fund amount and collect other investments' initial amounts
+    for (let investment of this.investmentInfo) {
+      console.log('Investment:', investment);
+      if (investment.investmentType === 'Emergency Fund') {
+        emergencyFundAmount = investment.initialinvestmentAmount;
+      } else {
+        otherInvestmentAmounts.push({
+          type: investment.investmentType,
+          amount: investment.initialinvestmentAmount
+        });
+      }
+    }
+
+    console.log('Emergency Fund Amount:', emergencyFundAmount);
+    console.log('Other Investment Amounts:', otherInvestmentAmounts);
+
+    // Check if emergency fund amount is greater than or equal to any other investment amount
+    let alertShown = false;
+    for (let otherInvestment of otherInvestmentAmounts) {
+      console.log(`Comparing ${emergencyFundAmount} with ${otherInvestment.amount}`);
+      if (emergencyFundAmount >= otherInvestment.amount) {
+        alert(`The initial amount of the emergency fund is greater than or equal to the initial amount of ${otherInvestment.type}. Please consider reducing the emergency fund amount.`);
+        alertShown = true;
+        break;
+      }
+    }
+    if (!alertShown) {
+      console.log('No alert triggered.');
+    }
+  }
+  
   
   // onSubmit(initialinvestmentAmount: number, regularinvestmentAmount: number, maturityAmount: number) {
   //   this.dataservice.addInvestment(initialinvestmentAmount, regularinvestmentAmount, maturityAmount);

@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <h2>Income and Expense</h2>
 
   <div class="income-section">
@@ -48,5 +48,65 @@
       </tr>
     </tbody>
   </table>
-  <!-- <p>Number of transactions: {{ transactions.length }}</p> -->
+  // <p>Number of transactions: {{ transactions.length }}</p> 
+</div> -->
+
+
+<div class="container">
+  <h2>Income and Expense</h2>
+
+  <div class="income-section">
+    <h3>Income</h3>
+    <div class="income-types">
+      <div *ngFor="let type of incomeTypes" class="type">
+        <div class="label">{{ type }}</div>
+        <div class="value">{{ getIncomeValue(type) | currency: 'INR' }}</div>
+      </div>
+    </div>
+    <div class="total-income">Total Income: {{ getTotalIncome() | currency: 'INR' }}</div>
+  </div>
+
+  <div class="expense-section">
+    <h3>Expense</h3>
+    <div class="expense-types">
+      <div *ngFor="let type of expenseTypes" class="type">
+        <div class="label">{{ type }}</div>
+        <div class="value">{{ getExpenseValue(type) | currency: 'INR' }}</div>
+      </div>
+    </div>
+    <div class="total-expense">Total Expense: {{ getTotalExpense() | currency: 'INR' }}</div>
+  </div>
+
+  <div class="total-balance">
+    <h3>Total Balance</h3>
+    <div class="value">{{ getTotalBalance() | currency: 'INR' }}</div>
+  </div>
+
+  <button (click)="openTransactionPopup()">Add Transaction</button>
+
+  <table *ngIf="transactions.length > 0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Transaction Type</th>
+        <th>Amount</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactions">
+        <td>{{ transaction.date }}</td>
+        <td>{{ transaction.transactionType }}</td>
+        <td>{{ transaction.amount | currency: 'INR' }}</td>
+        <td><button (click)="deleteTransaction(transaction)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Notifications Section -->
+  <div *ngIf="notifications.length > 0" class="notifications">
+    <div *ngFor="let notification of notifications" class="notification">
+      {{ notification }}
+    </div>
+  </div>
 </div>
