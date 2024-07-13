@@ -22,6 +22,10 @@ export class SideNavComponent {
   onProfile(){
     this.router.navigate(['/profile']);
   }
+
+  openExternalUrl(url: string): void {
+    window.location.href = url;
+  }
   // onHistory(){
   //   this.router.navigate(['/budget-planner/history']);
   // }
