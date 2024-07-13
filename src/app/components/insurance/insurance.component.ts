@@ -229,7 +229,52 @@ export class InsuranceComponent implements OnInit {
   }
 }
 
-function push(arg0: Observable<ProfileInsurance | null>): any {
-  throw new Error('Function not implemented.');
-}
+// calculateAndSaveFitnessScore(): void {
+//   this.user$.pipe(
+//     switchMap((user: any) => {
+//       if (!user || !user.uid) {
+//         alert('No user data found.');
+//         return of(null);
+//       }
+
+//       const inputs = {
+//         Income_Sources: ...,
+//         Passive_income: ...,
+//         Active_income: ...,
+//         dependant: ...,
+//         expenditure: ...,
+//         Loan: ...,
+//         emergency_fund: ...,
+//         Total_Investment: ...,
+//         Investment: ...,
+//         savings: ...,
+//         Health_insurance: ...,
+//         Term_insurance: ...,
+//         Total_Income: ...
+//       };
+
+//       const score = this.financescoreService.calculateFinancialFitnessScore(inputs);
+//       alert(`Your Financial Fitness Score is: ${score}`);
+
+//       return this.financescoreService.saveFinancialFitnessScore(user.uid, score);
+//     })
+//   ).subscribe({
+//     next: () => console.log('Financial fitness score saved successfully.'),
+//     error: (error) => console.error('Error saving financial fitness score:', error)
+//   });
+// }
+
+// // Example call to the new method (add this to a button click event or appropriate place in your component)
+// onCalculateFitnessScoreClick(): void {
+//   this.calculateAndSaveFitnessScore();
+// }
+// }
+
+
+// function calculateAndSaveFitnessScore() {
+//   throw new Error('Function not implemented.');
+// }
+// function push(arg0: Observable<ProfileInsurance | null>): any {
+//   throw new Error('Function not implemented.');
+// }
 
