@@ -1,104 +1,78 @@
-/* .container {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  h2, h3 {
-    text-align: center;
-  }
-  
-  .type {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .label {
-    flex: 1;
-  }
-  
-  .value {
-    flex: 1;
-    text-align: right;
-  }
-  
-  .total-income, .total-expense {
-    text-align: right;
-  }
-  
-  .income-types, .expense-types {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .total-balance {
-    text-align: center;
-  }
-  
-  button {
-    display: block;
-    margin: 0 auto;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-   */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
 
+h2, h3 {
+  text-align: center;
+}
 
+.type {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
 
+.label {
+  flex: 1;
+}
 
-   .container {
-    max-width: 600px;
-    margin: 0 auto;
+.value {
+  flex: 1;
+  text-align: right;
+}
+
+.total-income,
+.total-expense,
+.total-balance {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.notifications {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+@keyframes blink {
+  50% {
+    background-color: yellow;
   }
-  
-  h2, h3 {
-    text-align: center;
-  }
-  
-  .type {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .label {
-    flex: 1;
-  }
-  
-  .value {
-    flex: 1;
-    text-align: right;
-  }
-  
-  .total-income,
-  .total-expense,
-  .total-balance {
-    margin-top: 20px;
-    font-weight: bold;
-  }
-  
-  .notifications {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-  }
-  
-  .notification {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-  }
-  
+}
+
+.notification {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #ffcccb; /* Light red background */
+  color: #000; /* Black text */
+  animation: blink 1s linear infinite; /* Blink effect */
+  font-weight: bold; /* Bold text */
+}
+
+.notification:nth-child(odd) {
+  background-color: #ccffcc; /* Light green background for odd notifications */
+}
+
+.notification:nth-child(even) {
+  background-color: #cceeff; /* Light blue background for even notifications */
+}
+
+button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #007bff; /* Blue background */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
