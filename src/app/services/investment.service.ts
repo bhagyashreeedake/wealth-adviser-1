@@ -43,6 +43,9 @@ export class InvestmentService {
     return from(updateDoc(ref, { ...user }));
   }
 
+
+  
+
   getInvestmentByUid(uid: string, id:string): Observable<ProfileInvestment | null> {
     const ref = doc(this.firestore, 'investment', uid+id);
     
