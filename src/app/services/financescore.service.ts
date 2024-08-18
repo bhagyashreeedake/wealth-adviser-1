@@ -18,20 +18,40 @@ export class FinancescoreService {
     if (data.totalBalance > data.totalLoanAmount) {
       score += 1;
     }
-    if (data.initialInvestment > data.totalExpence) {
+    if (data.totalInitialInvestment > data.totalExpence) {
       score += 1;
     }
     if (data.coverAmount > 100000) {  // Example for insurance cover amount
       score += 1;
     }
+    // Example: Adjust score based on user data
+    if (data.userDOB) {
+      const age = this.calculateAge(data.userDOB);
+      if (age > 30) {
+        score += 1;
+      }
+    }
 
-    console.log(`Calculated Score: ${score}`); // Debugging
+    console.log(`Calculated Score: ${score}`);
     return score;
   }
 
+  calculateAge(dob: string): number {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age;
+  }
+
   saveFinancialFitnessScore(uid: string, score: number): Observable<void> {
-    console.log(`Saving Financial Fitness Score for UID ${uid}: ${score}`); // Debugging
+    console.log(`Saving Financial Fitness Score for UID ${uid}: ${score}`);
     // Replace with actual implementation to save score in Firestore
-    return of(); // Placeholder, replace with actual save logic
+    return of();
   }
 }

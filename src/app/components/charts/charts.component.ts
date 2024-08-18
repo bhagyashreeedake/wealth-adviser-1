@@ -9,6 +9,7 @@ import { InvestmentService } from 'src/app/services/investment.service';
 import { InsuranceService } from 'src/app/services/insurance.service';
 import { LoanService } from 'src/app/services/loan.service';
 import { FinancescoreService } from 'src/app/services/financescore.service';
+import { ProfileUser } from 'src/app/models/user'; // Import ProfileUser model
 
 @Component({
   selector: 'app-charts',
@@ -27,6 +28,13 @@ export class ChartsComponent implements OnInit {
   incomeexpenceInfo: any[] = [];
   myDonutChart: any;
 
+  // Add variables to store user details
+  userName: string = '';
+  userEmail: string = '';
+  userPhone: string = '';
+  userDOB: string = '';
+  userAddress: string = '';
+
   constructor(
     private dataservice: DataServiceService,
     private usersService: UsersService,
@@ -39,10 +47,18 @@ export class ChartsComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$.pipe(
-      switchMap((data: any) => {
+      switchMap((data: ProfileUser | null) => {
         if (!data || !data.uid) {
           return of(null);
-        } 
+        }
+
+        // Store user details
+        this.userName = `${data.firstName} ${data.lastName}`;
+        this.userEmail = data.email || '';
+        this.userPhone = data.phone || '';
+        this.userDOB = data.dateOfBirth || '';
+        this.userAddress = data.address || '';
+
         // Clear previous data to avoid mixing with new data
         this.incomeexpenceInfo = [];
         this.totalBalance = 0;
@@ -63,6 +79,7 @@ export class ChartsComponent implements OnInit {
       }
     });
 
+    // Subscribe to other data sources as you did before
     this.dataservice.totalBalance$.subscribe(totalBalance => {
       this.totalBalance = totalBalance;
       this.updateChartData();
@@ -112,7 +129,14 @@ export class ChartsComponent implements OnInit {
       otherIncome: this.incomeexpenceInfo[0]?.otherIncome || 0,
       monthlyExpense: this.incomeexpenceInfo[0]?.monthlyExpense || 0,
       quarterlyExpense: this.incomeexpenceInfo[0]?.quarterlyExpense || 0,
-      yearlyExpense: this.incomeexpenceInfo[0]?.yearlyExpense || 0
+      yearlyExpense: this.incomeexpenceInfo[0]?.yearlyExpense || 0,
+
+      // Include user data in the score calculation
+      userName: this.userName,
+      userEmail: this.userEmail,
+      userPhone: this.userPhone,
+      userDOB: this.userDOB,
+      userAddress: this.userAddress,
     };
 
     const score = this.financescore.calculateFinancialFitnessScore(inputs);
