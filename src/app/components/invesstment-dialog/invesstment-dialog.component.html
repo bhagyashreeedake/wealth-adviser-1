@@ -1,79 +1,36 @@
-<!-- <h2 mat-dialog-title>Investment Details</h2>
-<div mat-dialog-content>
-  <form #investmentForm="ngForm" (ngSubmit)="submitForm()">
-    <mat-form-field appearance="outline">
-      <mat-label>Emergency Fund</mat-label>
-      <input matInput placeholder="Emergency Fund" name="emergencyFund" [(ngModel)]="formData.emergencyFund" type="number" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Real Estate Value</mat-label>
-      <input matInput placeholder="Real Estate Value" name="realEstateValue" [(ngModel)]="formData.realEstateValue" type="number" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Monthly SIP</mat-label>
-      <input matInput placeholder="Monthly SIP" name="monthlySIP" [(ngModel)]="formData.monthlySIP" type="number" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Debt Investment</mat-label>
-      <input matInput placeholder="Debt Investment" name="debtInvestment" [(ngModel)]="formData.debtInvestment" type="number" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Equity Investment</mat-label>
-      <input matInput placeholder="Equity Investment" name="equityInvestment" [(ngModel)]="formData.equityInvestment" type="number" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Gold/Bond Investment</mat-label>
-      <input matInput placeholder="Gold/Bond Investment" name="goldBondInvestment" [(ngModel)]="formData.goldBondInvestment" type="number" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Investment as Savings</mat-label>
-      <input matInput placeholder="Investment as Savings" name="savingsInvestment" [(ngModel)]="formData.savingsInvestment" type="number" required>
-    </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-button color="primary" (click)="submitForm()" [disabled]="investmentForm.invalid">Submit</button>
-</div>
- -->
-
- <h2 mat-dialog-title>investment Details</h2>
+<h2 mat-dialog-title>Investment Details</h2>
 <div mat-dialog-content>
   <form #insuranceForm="ngForm" (ngSubmit)="submitForm()">
+    <!-- Existing Fields -->
     <mat-form-field appearance="outline">
-      <mat-label>Initial investment Amount</mat-label>
-      <input matInput placeholder="Initial investment Amount" name="initialinvestmentAmount" [(ngModel)]="formData.initialinvestmentAmount" type="number" required>
+      <mat-label>Initial Investment Amount</mat-label>
+      <input matInput placeholder="Initial Investment Amount" name="initialinvestmentAmount" [(ngModel)]="formData.initialinvestmentAmount" type="number" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Initial investment Date</mat-label>
-      <input matInput placeholder="Initial investment Date" name="intialinvestmentDate" [(ngModel)]="formData.initialinvestmentDate" type="date" required>
+      <mat-label>Initial Investment Date</mat-label>
+      <input matInput placeholder="Initial Investment Date" name="initialinvestmentDate" [(ngModel)]="formData.initialinvestmentDate" type="date" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Regular investment Amount</mat-label>
-      <input matInput placeholder="Regular investment Amount" name="regularinvestmentAmount" [(ngModel)]="formData.regularinvestmentAmount" type="number" required>
+      <mat-label>Regular Investment Amount</mat-label>
+      <input matInput placeholder="Regular Investment Amount" name="regularinvestmentAmount" [(ngModel)]="formData.regularinvestmentAmount" type="number" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Regular investment Date</mat-label>
-      <input matInput placeholder="Regular investment Date" name="regularinvestmentDate" [(ngModel)]="formData.regularinvestmentDate" type="date" required>
+      <mat-label>Regular Investment Date</mat-label>
+      <input matInput placeholder="Regular Investment Date" name="regularinvestmentDate" [(ngModel)]="formData.regularinvestmentDate" type="date" required>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Investment Type</mat-label>
-      <mat-select placeholder="Investment Type" name="investmentType" [(ngModel)]="formData.investmentType" required>/matInput>
-      <!-- <mat-select [(ngModel)]=""> -->
-      <mat-option value="Monthly">Monthly</mat-option>
-      <mat-option value="Quarterly">Quarterly</mat-option>
-      <mat-option value="Yearly">Yearly</mat-option>
-      <mat-option value="One Time pay">One Time pay</mat-option>
+      <mat-select placeholder="Investment Type" name="investmentType" [(ngModel)]="formData.investmentType" required>
+        <mat-option value="Monthly">Monthly</mat-option>
+        <mat-option value="Quarterly">Quarterly</mat-option>
+        <mat-option value="Yearly">Yearly</mat-option>
+        <mat-option value="One Time pay">One Time pay</mat-option>
       </mat-select>
     </mat-form-field>
-    <!-- <mat-form-field appearance="outline">
-      <mat-label>Premium Paying Type</mat-label>
-      <input matInput placeholder="Premium Paying Type" name="premiumPayingType" [(ngModel)]="formData.debtInvestment" type="number" required>
-    </mat-form-field> -->
     <mat-form-field appearance="outline">
         <mat-label>Maturity Date</mat-label>
         <input matInput placeholder="Maturity Date" name="maturityDate" [(ngModel)]="formData.maturityDate" type="date" required>
-      </mat-form-field>
+    </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Maturity Amount</mat-label>
       <input matInput placeholder="Maturity Amount" name="maturityAmount" [(ngModel)]="formData.maturityAmount" type="number">
@@ -82,15 +39,59 @@
       <mat-label>Annual Rate of Return In %</mat-label>
       <input matInput placeholder="Annual Rate of Return In %" name="annualRateOfReturn" [(ngModel)]="formData.annualRateOfReturn" type="number">
     </mat-form-field>
-    <!-- <mat-form-field appearance="outline">
-      <mat-label>Investment as Savings</mat-label>
-      <input matInput placeholder="Investment as Savings" name="savingsInvestment" [(ngModel)]="formData.savingsInvestment" type="number" required>
-    </mat-form-field> -->
+
+    <!-- New Section for Goal -->
+    <mat-form-field appearance="outline">
+      <mat-label>Link a Goal?</mat-label>
+      <mat-select placeholder="Link a Goal?" name="linkGoal" [(ngModel)]="formData.linkGoal" required>
+        <mat-option value="yes">Yes</mat-option>
+        <mat-option value="no">No</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div *ngIf="formData.linkGoal === 'yes'">
+      <mat-form-field appearance="outline">
+        <mat-label>Goal Name</mat-label>
+        <mat-select placeholder="Select Goal Name" name="goalName" [(ngModel)]="formData.goalName" required>
+          <mat-option value="home">Home</mat-option>
+          <mat-option value="car">Car</mat-option>
+          <mat-option value="education">Education</mat-option>
+          <mat-option value="commercial property">Commercial Property</mat-option>
+          <mat-option value="business">Business</mat-option>
+          <mat-option value="emergency">Emergency</mat-option>
+          <mat-option value="hospital">Hospital</mat-option>
+          <mat-option value="retirement">Retirement</mat-option>
+          <mat-option value="travel">Travel</mat-option>
+          <mat-option value="marriage">Marriage</mat-option>
+          <mat-option value="my first crore">My First Crore</mat-option>
+          <mat-option value="startup fund">Startup Fund</mat-option>
+          <mat-option value="others">Others</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Goal Amount</mat-label>
+        <input matInput placeholder="Goal Amount" name="goalAmount" [(ngModel)]="formData.goalAmount" type="number" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Goal Maturity Date</mat-label>
+        <input matInput placeholder="Goal Maturity Date" name="goalMaturityDate" [(ngModel)]="formData.goalMaturityDate" type="date" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Goal Loan Amount</mat-label>
+        <input matInput placeholder="Goal Loan Amount" name="goalLoanAmount" [(ngModel)]="formData.goalLoanAmount" type="number">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Goal Insurance Amount</mat-label>
+        <input matInput placeholder="Goal Insurance Amount" name="goalInsuranceAmount" [(ngModel)]="formData.goalInsuranceAmount" type="number">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Goal Income Expense Amount</mat-label>
+        <input matInput placeholder="Goal Income Expense Amount" name="goalIncomeExpenseAmount" [(ngModel)]="formData.goalIncomeExpenseAmount" type="number">
+      </mat-form-field>
+    </div>
   </form>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="cancel()">Cancel</button>
   <button mat-button color="primary" (click)="submitForm()" [disabled]="insuranceForm.invalid">Submit</button>
 </div>
-
-

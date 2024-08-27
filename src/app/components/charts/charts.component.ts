@@ -43,12 +43,15 @@ export class ChartsComponent implements OnInit {
     private insuranceservice: InsuranceService,
     private loanservice: LoanService,
     private financescore: FinancescoreService
-  ) {}
+  ) {
+    // /this.user$ = this.authService.getCurrentUser(); // Assuming this returns an Observable<ProfileUser | null>
+  }
 
   ngOnInit(): void {
     this.user$.pipe(
       switchMap((data: ProfileUser | null) => {
         if (!data || !data.uid) {
+          console.error('User not logged in or UID is missing.');
           return of(null);
         }
 
@@ -118,31 +121,43 @@ export class ChartsComponent implements OnInit {
   }
 
   calculateScore(): void {
-    const inputs = {
-      totalBalance: this.totalBalance,
-      totalIncome: this.totalIncome,
-      totalExpence: this.totalExpence,
-      totalInitialInvestment: this.totalInitialInvestment,
-      totalLoanAmount: this.totalLoanAmount,
-      activeIncome: this.incomeexpenceInfo[0]?.activeIncome || 0,
-      passiveIncome: this.incomeexpenceInfo[0]?.passiveIncome || 0,
-      otherIncome: this.incomeexpenceInfo[0]?.otherIncome || 0,
-      monthlyExpense: this.incomeexpenceInfo[0]?.monthlyExpense || 0,
-      quarterlyExpense: this.incomeexpenceInfo[0]?.quarterlyExpense || 0,
-      yearlyExpense: this.incomeexpenceInfo[0]?.yearlyExpense || 0,
+    this.user$.subscribe((user) => {
+      if (user && user.uid) {
+        const inputs = {
+          totalBalance: this.totalBalance,
+          totalIncome: this.totalIncome,
+          totalExpence: this.totalExpence,
+          totalInitialInvestment: this.totalInitialInvestment,
+          totalLoanAmount: this.totalLoanAmount,
+          activeIncome: this.incomeexpenceInfo[0]?.activeIncome || 0,
+          passiveIncome: this.incomeexpenceInfo[0]?.passiveIncome || 0,
+          otherIncome: this.incomeexpenceInfo[0]?.otherIncome || 0,
+          monthlyExpense: this.incomeexpenceInfo[0]?.monthlyExpense || 0,
+          quarterlyExpense: this.incomeexpenceInfo[0]?.quarterlyExpense || 0,
+          yearlyExpense: this.incomeexpenceInfo[0]?.yearlyExpense || 0,
 
-      // Include user data in the score calculation
-      userName: this.userName,
-      userEmail: this.userEmail,
-      userPhone: this.userPhone,
-      userDOB: this.userDOB,
-      userAddress: this.userAddress,
-    };
+          // Include user data in the score calculation
+          userName: this.userName,
+          userEmail: this.userEmail,
+          userPhone: this.userPhone,
+          userDOB: this.userDOB,
+          userAddress: this.userAddress,
+        };
 
-    const score = this.financescore.calculateFinancialFitnessScore(inputs);
-    console.log(`Financial Fitness Score: ${score}`);
+        const score = this.financescore.calculateFinancialFitnessScore(inputs);
+        console.log(`Financial Fitness Score: ${score}`);
 
-    this.updateMeter(score); // Update the gauge meter with the calculated score
+        this.updateMeter(score); // Update the gauge meter with the calculated score
+
+        this.dataservice.saveOrUpdateFinancialFitnessScore(user.uid, score)
+          .subscribe({
+            next: () => console.log('Financial fitness score saved successfully.'),
+            error: (error) => console.error('Failed to save financial fitness score:', error)
+          });
+      } else {
+        console.error('User not logged in or UID is missing.');
+      }
+    });
   }
 
   updateMeter(score: number): void {
