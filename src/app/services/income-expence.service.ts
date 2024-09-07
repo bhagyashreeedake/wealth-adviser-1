@@ -6,10 +6,13 @@ import {
   setDoc,
   updateDoc,
   getDoc,
+<<<<<<< HEAD
   collection,
   query,
   collectionData,
   where,
+=======
+>>>>>>> 1979fa4519242a52498a3de20f0d32c6597a51c4
 } from '@angular/fire/firestore';
 import { from, Observable, of, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
