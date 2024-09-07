@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import {
   collection,
+  collectionData,
   doc,
   docData,
   Firestore,
   getDoc,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
 import { filter, from, map, Observable, of, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -51,5 +54,10 @@ export class InvestmentService {
     
     return docData(ref) as Observable<ProfileInvestment>;
     
+  }
+  getInvestmentData(uid: string, index: string): Observable<any[]> {
+    const investmentCollection = collection(this.firestore, 'investment');
+    const investmentQuery = query(investmentCollection, where('uid', '==', uid), where('index', '==', index));
+    return collectionData(investmentQuery, { idField: 'id' }) as Observable<any[]>;
   }
 }
