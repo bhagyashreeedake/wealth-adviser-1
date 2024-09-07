@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionPopupComponent } from '../transaction-popup/transaction-popup.component';
 import { DataServiceService } from 'src/app/services/data/data-service.service';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { IncomeExpenceService } from 'src/app/services/income-expence.service';
 import { ProfileIncomeExpence } from 'src/app/models/income-expence';
-import { switchMap } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { UsersService } from 'src/app/services/users.service';
 export class IncomeExpenseComponent implements OnInit {
   transactions: any[] = [];
   user$ = this.usersService.currentUserProfile$;
-  currentuid: any;
+  currentuid: string = '';
   incomeexpenceInfo: any[] = [];
   incomeExpenceData: any;
   activeIncome: number = 0;
@@ -28,10 +28,14 @@ export class IncomeExpenseComponent implements OnInit {
   totalBalance: number = 0;
   incomeTypes: string[] = ['Active Income', 'Passive Income', 'Other Income'];
   expenseTypes: string[] = ['Monthly Expense', 'Quarterly Expense', 'Yearly Expense'];
-  notifications: string[] = []; // Add this line
+  notifications: string[] = [];
 
-
-  constructor(private dialog: MatDialog, private dataservice: DataServiceService, private incomeexpenceservice: IncomeExpenceService, private usersService: UsersService) { }
+  constructor(
+    private dialog: MatDialog,
+    private dataservice: DataServiceService,
+    private incomeexpenceservice: IncomeExpenceService,
+    private usersService: UsersService
+  ) {}
 
   ngOnInit(): void {
     this.user$.pipe(
@@ -47,7 +51,7 @@ export class IncomeExpenseComponent implements OnInit {
         this.setFetchedDataintoform(incomeexpenceData);
         this.incomeexpenceInfo.push(incomeexpenceData);
         console.log('Incomeexpence Data:', incomeexpenceData);
-        this.checkFinancialConditions(); // Call the method here
+        this.checkFinancialConditions();
       } else {
         console.log('No incomeexpence data found.');
       }
@@ -65,7 +69,7 @@ export class IncomeExpenseComponent implements OnInit {
   }
 
   checkFinancialConditions() {
-    this.notifications = []; // Clear existing notifications
+    this.notifications = [];
 
     if (this.activeIncome > this.passiveIncome) {
       this.notifications.push('Your active income is greater than your passive income. Consider increasing your passive income.');
@@ -97,9 +101,12 @@ export class IncomeExpenseComponent implements OnInit {
           this.handleExpenseTransaction(result);
         }
 
+        // Save or update the transaction for the current user
         let a: ProfileIncomeExpence = this.getalldata();
-        this.incomeexpenceservice.updateIncomeexpence(a).subscribe(() => {
+        this.incomeexpenceservice.updateIncomeexpence(a).then(() => {
           console.log('Income/Expense data updated successfully.');
+        }).catch((error) => {
+          console.error('Error updating Income/Expense data:', error);
         });
       }
     });
@@ -184,10 +191,7 @@ export class IncomeExpenseComponent implements OnInit {
     }
   }
 
-  
-
-  // // Update chart data
-   updateChart() {
-  //  this.doughnutChartData = [this.getTotalIncome(), this.getTotalExpense()];
+  updateChart() {
+    // Update chart data logic
   }
 }

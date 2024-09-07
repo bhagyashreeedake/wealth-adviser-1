@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   collection,
+  collectionData,
   doc,
   docData,
   DocumentData,
@@ -21,6 +22,7 @@ import { ProfileLoan } from '../models/loan';
   providedIn: 'root'
 })
 export class LoanService {
+  
   // }
   // getLoanByUidAndId(uid: string, id: string): Observable<ProfileLoan | null> {
   //   const loanDocRef = doc(this.firestore, 'loans', `${uid}-${id}`);
@@ -152,6 +154,12 @@ export class LoanService {
         return of(0); // Return an observable that emits 0 in case of an error
       })
     );
+  }
+
+  getLoanData(uid: string, index: string): Observable<any[]> {
+    const loanCollection = collection(this.firestore, 'loan');
+    const loanQuery = query(loanCollection, where('uid', '==', uid), where('index', '==', index));
+    return collectionData(loanQuery, { idField: 'id' }) as Observable<any[]>;
   }
   
   // getLoanByUid(uid: string): Observable<ProfileLoan[]> {

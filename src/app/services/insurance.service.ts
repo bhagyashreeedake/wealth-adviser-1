@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   collection,
+  collectionData,
   doc,
   docData,
   Firestore,
@@ -21,9 +22,7 @@ import { query, where, getDocs, CollectionReference } from '@angular/fire/firest
 export class InsuranceService {
   // user$: Observable<any> | undefined;
   getInsuranceByid: any;
-  getIdByUid(uid: any) {
-    throw new Error('Method not implemented.');
-  }
+  
 
   constructor(private firestore: Firestore, private authService: AuthService) {}
 
@@ -55,6 +54,11 @@ export class InsuranceService {
     return docData(ref) as Observable<ProfileInsurance>;
   }
 
+  getInsuranceData(uid: string, index: string): Observable<any[]> {
+    const insurancesCollection = collection(this.firestore, 'insurance');
+    const insurancesQuery = query(insurancesCollection, where('uid', '==', uid), where('index', '==', index));
+    return collectionData(insurancesQuery, { idField: 'id' }) as Observable<any[]>;
+  }
 
 // ...
 

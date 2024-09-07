@@ -17,9 +17,7 @@ import { AuthService } from './auth.service';
 })
 export class UsersService {
   currentUser$: any;
-  getIdByUid(uid: any) {
-    throw new Error('Method not implemented.');
-  }
+  
   constructor(private firestore: Firestore, private authService: AuthService) {}
 
   get currentUserProfile$(): Observable<ProfileUser | null> {
@@ -44,4 +42,7 @@ export class UsersService {
     const ref = doc(this.firestore, 'users', user.uid);
     return from(updateDoc(ref, { ...user }));
   }
+
+  
+
 }
